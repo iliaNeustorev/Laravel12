@@ -66,6 +66,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        $postsCnt = $category->posts()->count();
+
+        if($postsCnt >= 1) {
+            abort(403, 'Please before remove posts:' . $postsCnt);
+        }
         $category->delete();
         return redirect()->route('categories.index')->with('notice', 'categories.deleted');
     }

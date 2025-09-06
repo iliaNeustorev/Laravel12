@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Post;
 
+use App\Models\Category;
+use App\Rules\SoftExists;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
@@ -27,7 +29,7 @@ class StoreRequest extends FormRequest
             'url' => [ 'required', 'min:5', 'max:255', $this->uniqueRule()],
             'title' => ['required', 'min:5', 'max:255'],
             'content' => ['required'],
-            'category_id' => ['nullable', 'exists:categories,id']
+            'category_id' => ['nullable', new SoftExists(Category::class)]
         ];
     }
 
