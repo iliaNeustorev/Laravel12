@@ -18,6 +18,6 @@ class Product extends Model
      */
     public function shops()
     {
-        return $this->belongsToMany(Shop::class);
+        return $this->belongsToMany(Shop::class)->withTimestamps()->withPivot('price');
     }
 }

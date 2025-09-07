@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Product::class)->constrained();
             $table->foreignIdFor(Shop::class)->constrained();
-            $table->integer('price');
+            $table->integer('price')->nullable();
             $table->timestamps();
         });
     }
