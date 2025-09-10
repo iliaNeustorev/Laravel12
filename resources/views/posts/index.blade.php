@@ -1,4 +1,9 @@
 <x-layouts.main title="Все посты">
+     <x-form.form method="POST" action="{{ route('logout') }}">
+        <button class="button btn-danger">
+            Выйти
+        </button>
+    </x-form.form>
     <a href="{{ route('posts.create') }}">Create post</a>
     <x-form.form method="get" action="{{ route('posts.index') }}">
         <x-form.select name="status" :options="$statuses" label="Выберите статус" :defaultValue="$filters['status'] ?? ''" />
