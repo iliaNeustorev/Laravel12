@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostTrashController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\Users\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function() {
@@ -30,6 +31,8 @@ Route::middleware('auth')->group(function() {
     Route::post('/forgot-password', [PasswordResetController::class, 'store'])->name('password.email');
     Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
     Route::post('/reset-password', [NewPasswordController::class, 'store'])->name('password.update');
+    Route::get('/unverified', fn() => view('auth/unverified'))->name('verification.notice');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     // ADMIN CONTROLLER
     Route::resource('posts', PostController::class);
     Route::resource('post-trash', PostTrashController::class)->except('show', 'create', 'store', 'edit');
