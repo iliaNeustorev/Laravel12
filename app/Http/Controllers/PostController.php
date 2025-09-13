@@ -8,6 +8,7 @@ use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Category;
 use App\Models\Post;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -17,7 +18,7 @@ class PostController extends Controller
     public function index(FilterRequest $request)
     {
         $filters = $request->validated();
-        $posts = Post::with('category:id,title')
+        $posts = Post::with('category:id,title', 'user')
             ->filter($filters)
             ->orderByDesc('updated_at')
             ->get();
@@ -40,8 +41,10 @@ class PostController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        Gate::authorize('create', Post::class);
+        $user = $request->user();
         $data = $request->validated();
-        Post::create($data);
+        Post::create($data + ['user_id' => $user->id]);
         return redirect()->route('posts.index')->with('notice', 'posts.created');
     }
 
@@ -68,6 +71,7 @@ class PostController extends Controller
      */
     public function update(UpdateRequest $request, Post $post)
     {
+        Gate::authorize('update', $post);
         $data = $request->validated();
         $post->update($data);
         return redirect()->route('posts.index')->with('notice', 'posts.updated');
@@ -78,6 +82,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Gate::authorize('delete', $post);
         $post->delete();
         return redirect()->route('posts.index')->with('notice', 'posts.deleted');
     }

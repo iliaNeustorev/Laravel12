@@ -16,12 +16,12 @@ class Post extends Model
         'content',
         'title',
         'category_id',
-        'status'
+        'status',
+        'user_id',
     ];
 
     protected $casts = [
         'status' => Status::class,
-        'created_at' => 'date_format:d.m.Y'
     ];
 
     /**
@@ -50,6 +50,7 @@ class Post extends Model
     {
         return $this->status === Status::DRAFT;
     }
+
     /**
      *
      * @return BelongsTo
@@ -57,6 +58,15 @@ class Post extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     *
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**

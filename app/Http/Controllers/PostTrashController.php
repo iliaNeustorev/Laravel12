@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Facades\Gate;
 
 class PostTrashController extends Controller
 {
@@ -20,6 +21,7 @@ class PostTrashController extends Controller
      */
     public function update(int $postTrashId)
     {
+        Gate::authorize('restore', $postTrashId);
         $postTrash = Post::onlyTrashed()->where('id', $postTrashId)->firstOrFail();
         $postTrash->restore();
         return redirect()->route('posts.index');
@@ -30,6 +32,7 @@ class PostTrashController extends Controller
      */
     public function destroy(int $postTrashId)
     {
+        Gate::authorize('forceDelete', $postTrashId);
         $postTrash = Post::onlyTrashed()->where('id', $postTrashId)->firstOrFail();
         $postTrash->forceDelete();
         return redirect()->route('post-trash.index');

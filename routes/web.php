@@ -36,8 +36,8 @@ Route::middleware('auth')->group(function() {
     // ADMIN CONTROLLER
     Route::resource('posts', PostController::class);
     Route::resource('post-trash', PostTrashController::class)->except('show', 'create', 'store', 'edit');
-    Route::resource('categories', CategoryController::class);
-    Route::patch('/posts/{post}', [ PostController::class, 'publish' ])->name('posts.publish');
+    Route::resource('categories', CategoryController::class)->middleware('can:dev');
+    Route::patch('/posts/{post}', [PostController::class, 'publish'])->name('posts.publish')->middleware('can:moderator');
     Route::resource('shops', ShopController::class);
     Route::put('shops/{shop}/detach-all-products', [ShopController::class, 'detachAllProducts']);
 });

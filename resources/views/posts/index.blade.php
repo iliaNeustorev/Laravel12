@@ -15,6 +15,7 @@
                     <td>{{ $post->url }}</td>
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->category->title ?? 'Без категории' }}</td>
+                    <td>{{ $post->user->first_name }}</td>
                     <td><a href="{{ route('posts.show', $post->id) }}">Show</a></td>
                     <td><a href="{{ route('posts.edit', $post->id) }}">Edit</a></td>
                     <td>
